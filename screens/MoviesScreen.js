@@ -56,7 +56,7 @@ const MoviesScreen = ({ navigation }) => {
       <TextInput
         placeholder="search movie"
         style={styles.input}
-        onChangeText={getMoviesByTitleSearch}//geeft argument enteredText mee, denk aan de taskInputHandler uit de todo app.
+        onChangeText={getMoviesByTitleSearch}//geeft argument enteredText mee
       />
       <FlatList
         data={movies}
