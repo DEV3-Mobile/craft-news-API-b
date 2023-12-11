@@ -1,8 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import MoviesScreen from './screens/MoviesScreen';
-import DetailsScreen from './screens/DetailsScreen';
+import NewsScreen from './screens/NewsScreen';
+import ArticleScreen from './screens/ArticleScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -10,8 +10,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Movies" component={MoviesScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="News" component={NewsScreen} />
+        <Stack.Screen name="Details" component={ArticleScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
