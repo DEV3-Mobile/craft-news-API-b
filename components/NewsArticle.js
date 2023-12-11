@@ -4,20 +4,9 @@ import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 
 
 const NewsArticle = props => {
-  const [article, setArticle] = useState({});
 
   const getArticleData = async () => {
-    try {
-      const url = encodeURI("http://news-website.ddev.site/api/news/" + props.articleId)
-      const response = await fetch(url, {
-        "method": "GET",
-
-      })
-      const json = await response.json();
-      setArticle(json);
-    } catch (error) {
-      console.error(error);
-    }
+    //request naar CMS
   }
 
   useEffect(() => {
@@ -29,12 +18,12 @@ const NewsArticle = props => {
       <Image
         style={styles.image}
         source={{
-          uri: article.headerImg
+          uri: "http://unsplash.com/photos/_SgRNwAVNKw/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzAyMjg4MDAxfA&force=true&w=1920"
         }}
       />
       <View style={styles.wrapper}>
-        <Text style={styles.title}>{article.title}</Text>
-        <Text style={styles.body}>{article.full}</Text>
+        <Text style={styles.title}>title goes here</Text>
+        <Text style={styles.body}>article text goes here</Text>
       </View>
     </ScrollView >
   );

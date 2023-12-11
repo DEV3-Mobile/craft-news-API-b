@@ -5,23 +5,26 @@ import NewsItem from '../components/NewsItem';
 
 const NewsScreen = ({ navigation }) => {
 
-  const [articles, setArticles] = useState([]);
-
-  const getNewsArticles = async () => {
-    try {
-      const response = await fetch("http://news-website.ddev.site/api/news", {
-        "method": "GET"
-      })
-      const json = await response.json();
-      console.log(json);
-      setArticles(json.items);
-    } catch (error) {
-      console.error(error);
+  const articles = [
+    {
+      id: 1,
+      title: "title goes here",
+      intro: "intro goes here",
+      banner: "http://unsplash.com/photos/_SgRNwAVNKw/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzAyMjg4MDAxfA&force=true&w=1920"
+    },
+    {
+      id: 2,
+      title: "title goes here",
+      intro: "intro goes here",
+      banner: "http://unsplash.com/photos/_SgRNwAVNKw/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzAyMjg4MDAxfA&force=true&w=1920"
     }
+  ];
+  const getNewsArticles = async () => {
+    //request naar CMS 
   }
 
   useEffect(() => {
-    getNewsArticles();//laad movies wanneer het scherm laadt
+    getNewsArticles();
   }, []);
 
   return (
@@ -36,7 +39,7 @@ const NewsScreen = ({ navigation }) => {
             id={item.id}
             title={item.title}
             intro={item.intro}
-            banner={item.bannerImg}
+            banner={item.banner}
             navigation={navigation}
             onSelectArticle={(selectedId) => { navigation.navigate('Details', { id: selectedId }) }}
           />
