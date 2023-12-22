@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TextInput, Platform } from 'react-native';
 
 import NewsItem from '../components/NewsItem';
 
 const NewsScreen = ({ navigation }) => {
+  const [articles, setArticle] = useState([]);
 
-  const articles = [
-    {
-      id: 1,
-      title: "title goes here",
-      intro: "intro goes here",
-      banner: "http://unsplash.com/photos/_SgRNwAVNKw/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzAyMjg4MDAxfA&force=true&w=1920"
-    },
-    {
-      id: 2,
-      title: "title goes here",
-      intro: "intro goes here",
-      banner: "http://unsplash.com/photos/_SgRNwAVNKw/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzAyMjg4MDAxfA&force=true&w=1920"
-    }
-  ];
   const getNewsArticles = async () => {
-    //request naar CMS 
+    try {
+      //10.0.2.2:60628
+      //http://craft-news-b.ddev.site
+      let url;
+      if (Platform.OS == 'android') {
+        //ddev describe om port number te weten te komen
+        url = "http://10.0.2.2:<vul port in>/api/news/";
+      }
+      else {
+        url = "http://craft-news-b.ddev.site/api/news/"
+      }
+
+      const response = await fetch(url, {
+        "method": "GET"
+      });
+      const json = await response.json();
+      console.log(json.items);
+      setArticle(json.items);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {
@@ -34,16 +41,21 @@ const NewsScreen = ({ navigation }) => {
         style={styles.list}
         data={articles}
         keyExtractor={item => item.id}//gebruik id als key voor de flatlist
-        renderItem={({ item }) => (
-          <NewsItem
+        renderItem={({ item }) => {
+          if (Platform.OS == 'android') {
+            item.bannerImg = item.bannerImg.replace('craft-news-b.ddev.site', '10.0.2.2:60628');
+          }
+
+          console.log(item.bannerImg);
+          return <NewsItem
             id={item.id}
             title={item.title}
             intro={item.intro}
-            banner={item.banner}
+            banner={item.bannerImg}
             navigation={navigation}
             onSelectArticle={(selectedId) => { navigation.navigate('Details', { id: selectedId }) }}
           />
-        )}
+        }}
       />
     </View >
   );

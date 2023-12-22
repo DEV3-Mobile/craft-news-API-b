@@ -1,12 +1,38 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Platform } from 'react-native';
 
 
 const NewsArticle = props => {
-
+  const [article, setArticle] = useState({});
+  // console.log(props.articleId);
   const getArticleData = async () => {
-    //request naar CMS
+    try {
+      //127.0.0.1 -> surft naar dit toestel
+      //10.0.2.2 -> surft naar host toestel
+
+      let url;
+      if (Platform.OS == 'android') {
+        //ddev describe om port number te weten te komen
+
+        url = "http://10.0.2.2:<vul port in>/api/news/";
+      }
+      else {
+        url = "http://craft-news-b.ddev.site/api/news/";
+      }
+      url += props.articleId;
+      const response = await fetch(url, {
+        "method": "GET"
+      });
+      const json = await response.json();
+      console.log(json.headerImg);
+      if (Platform.OS == 'android') {
+        json.headerImg = json.headerImg.replace('craft-news-b.ddev.site', '10.0.2.2:<vul port in>');
+      }
+      setArticle(json);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {
@@ -18,12 +44,12 @@ const NewsArticle = props => {
       <Image
         style={styles.image}
         source={{
-          uri: "http://unsplash.com/photos/_SgRNwAVNKw/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzAyMjg4MDAxfA&force=true&w=1920"
+          uri: article.headerImg
         }}
       />
       <View style={styles.wrapper}>
-        <Text style={styles.title}>title goes here</Text>
-        <Text style={styles.body}>article text goes here</Text>
+        <Text style={styles.title}>{article.title}</Text>
+        <Text style={styles.body}>{article.fullText}</Text>
       </View>
     </ScrollView >
   );
